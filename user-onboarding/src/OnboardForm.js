@@ -1,10 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Form, Field, withFormik} from "formik";
 import * as Yup from "yup";
 import './Form.css';
 
-const OnboardForm = ({errors, touched, values}) => {
+const OnboardForm = ({errors, touched, values, status}) => {
+  const [user, setUser]= useState([]);
+  console.log(user);
+  useEffect(() => {
+    if (status) {
+      setUser([...user, status]);
+    }
+  }, [status]);
   return (
     <div className="onboard-form">
       <Form>
@@ -21,11 +28,17 @@ const OnboardForm = ({errors, touched, values}) => {
           <p className="error">{errors.password}</p>
         )}
         <label className="checkbox">
-          Terms of Service
+          Accept Terms of Service
           <Field name="terms" type="checkbox" checked={values.terms} />
+          <span className="checkmark" />
         </label>
         <button>Submit</button>
       </Form>
+      {user.map(user => ( 
+        <p key={user.id}>
+          {user.name}, {user.email}
+        </p>
+      ))}
     </div>
   );
 };
@@ -41,12 +54,13 @@ const FormikOnboardForm = withFormik({
   },
   validationSchema: Yup.object().shape({
     name: Yup.string().required("I need your name!"),
-    email: Yup.string().required("Pretty please?"),
-    password: Yup.string().required(),
+    email: Yup.string().required("Need your email too!"),
+    password: Yup.string().required("Need password (I'm so needy today!)"),
+    
   }),
   handleSubmit(values, {setStatus}){
     axios
-    .post("< https://reqres.in/api/users>", values)
+    .post('https://reqres.in/api/users', values)
     .then(res => {
       setStatus(res.data);
     })
