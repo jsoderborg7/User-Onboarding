@@ -29,8 +29,10 @@ const OnboardForm = ({errors, touched, values, status}) => {
         )}
         <label className="checkbox">
           Accept Terms of Service
-          <Field name="terms" type="checkbox" checked={values.terms} />
-          <span className="checkmark" />
+          <Field name="terms" type="checkbox" checked={values.terms}/>
+          {touched.terms && errors.terms && (
+            <p className="error">{errors.terms}</p>
+          )}
         </label>
         <button>Submit</button>
       </Form>
@@ -56,7 +58,7 @@ const FormikOnboardForm = withFormik({
     name: Yup.string().required("I need your name!"),
     email: Yup.string().required("Need your email too!"),
     password: Yup.string().required("Need password (I'm so needy today!)"),
-    
+    terms: Yup.bool().oneOf([true], "Please accept the terms!"),
   }),
   handleSubmit(values, {setStatus}){
     axios
