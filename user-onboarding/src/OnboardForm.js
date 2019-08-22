@@ -16,6 +16,7 @@ const OnboardForm = ({errors, touched, values, status}) => {
   return (
     <StyledDiv>
     <div className="onboard-form">
+    <h1>Sign up Here!</h1>
       <Form>
         <div className="field">
           <Field name="name" type="text" placeholder="Name"/>
@@ -45,11 +46,13 @@ const OnboardForm = ({errors, touched, values, status}) => {
           </label>
           <button className="button">Submit</button>
       </Form>
+      <div className="userInfo">
       {user.map(user => ( 
         <p key={user.id}>
-          {user.name}, {user.email}
+          Thank you {user.name}!
         </p>
-      ))}
+        ))}
+      </div>
     </div>
     </StyledDiv>
   );
@@ -82,14 +85,21 @@ const FormikOnboardForm = withFormik({
 
 const StyledDiv = styled.div `
 .onboard-form{
-  border: 2px solid green;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   width: 25%;
   margin: auto;
+  margin-top: 5%;
   padding: 3%;
+  background-color: #f0efed;
+  opacity: .8;
+
+  h1{
+    font-size: 2.5rem;
+    color: #0a77a2;
+  }
 
   input{
     width: 100%;
@@ -110,13 +120,32 @@ const StyledDiv = styled.div `
     input{
       height: 30px;
       width: 30px;
+      background-color: white;
       }
     }
 
    .button{
+      width: 100%;
       font-size: 1.5rem;
       border-radius: 10px;
       padding: 5% 20%;
+      margin: 3%;
+      background-color: #0a77a2;
+      color: white;
+
+      :hover{
+        background-color: #470123;
+      }
+    }
+
+    .error{
+      color: red;
+      font-size: 1rem;
+    }
+
+    .userInfo{
+      font-size: 1.5rem;
+      color: #470123;
     }
 }
 `;
