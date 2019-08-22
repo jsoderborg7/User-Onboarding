@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Form, Field, withFormik} from "formik";
 import * as Yup from "yup";
 import './Form.css';
+import styled from "styled-components";
 
 const OnboardForm = ({errors, touched, values, status}) => {
   const [user, setUser]= useState([]);
@@ -13,28 +14,36 @@ const OnboardForm = ({errors, touched, values, status}) => {
     }
   }, [status]);
   return (
+    <StyledDiv>
     <div className="onboard-form">
       <Form>
-        <Field name="name" type="text" placeholder="Name"/>
-        {touched.name && errors.name && (
-          <p className="error">{errors.name}</p>
-        )}
-        <Field name="email" type="email" placeholder="Email"/>
-        {touched.email && errors.email && (
-          <p className="error">{errors.email}</p>
-        )}
-        <Field name="password" type="password" placeholder="Password"/>
-        {touched.password && errors.password && (
-          <p className="error">{errors.password}</p>
-        )}
-        <label className="checkbox">
-          Accept Terms of Service
-          <Field name="terms" type="checkbox" checked={values.terms}/>
-          {touched.terms && errors.terms && (
-            <p className="error">{errors.terms}</p>
+        <div className="field">
+          <Field name="name" type="text" placeholder="Name"/>
+          {touched.name && errors.name && (
+            <p className="error">{errors.name}</p>
           )}
-        </label>
-        <button>Submit</button>
+        </div>
+        <div className="field">
+          <Field name="email" type="email" placeholder="Email"/>
+          {touched.email && errors.email && (
+            <p className="error">{errors.email}</p>
+          )}
+        </div>
+        <div className="field">
+          <Field name="password" type="password" placeholder="Password"/>
+          {touched.password && errors.password && (
+            <p className="error">{errors.password}</p>
+          )}
+        </div>
+          <label className="checkbox-container">
+            Accept Terms of Service
+            <Field name="terms" type="checkbox" checked={values.terms}/>
+            {touched.terms && errors.terms && (
+              <p className="error">{errors.terms}</p>
+            )}
+          <span className="checkmark"/>
+          </label>
+          <button className="button">Submit</button>
       </Form>
       {user.map(user => ( 
         <p key={user.id}>
@@ -42,6 +51,7 @@ const OnboardForm = ({errors, touched, values, status}) => {
         </p>
       ))}
     </div>
+    </StyledDiv>
   );
 };
 
@@ -69,4 +79,45 @@ const FormikOnboardForm = withFormik({
     .catch(err => console.log(err.response));
   }
 })(OnboardForm);
+
+const StyledDiv = styled.div `
+.onboard-form{
+  border: 2px solid green;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 25%;
+  margin: auto;
+  padding: 3%;
+
+  input{
+    width: 100%;
+    padding: 2%;
+    margin: 5% 0%;
+    font-size: 1.5rem;
+  }
+
+  .checkbox-container {
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: auto;
+    width: 100%;
+
+    input{
+      height: 30px;
+      width: 30px;
+      }
+    }
+
+   .button{
+      font-size: 1.5rem;
+      border-radius: 10px;
+      padding: 5% 20%;
+    }
+}
+`;
 export default FormikOnboardForm;
